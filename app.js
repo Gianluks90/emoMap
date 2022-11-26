@@ -1,0 +1,1 @@
+import { InputComponent } from "./components/input-component/input-component";
