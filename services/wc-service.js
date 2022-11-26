@@ -10,11 +10,11 @@ export default class WCService{
     }
   }
 
-  tryParse(json){
+  static tryParse(json){
     try {
       return JSON.parse(json);
     } catch (error) {
-      return null;
+      return json;
     }
   }
 
@@ -41,7 +41,7 @@ export default class WCService{
 
     if (listeners) {
       for (const key of Object.keys(listeners)) {
-        element.addEventListener(key, listeners[key]);
+        el.addEventListener(key, listeners[key]);
       }
     }
 
