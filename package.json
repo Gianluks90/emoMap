@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.3",
-    "leaflet-css": "^0.1.0"
+    "leaflet-css": "^0.1.0",
+    "firebase": "^9.14.0"
   }
 }
