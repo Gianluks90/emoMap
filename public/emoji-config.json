@@ -1,0 +1,42 @@
+[
+        {
+            "code": "0",
+            "url": "./emoji/felice.png"
+        },
+        {
+            "code": "1",
+            "url": "./emoji/innamorato.png"
+        },
+        {
+            "code": "2",
+            "url": "./emoji/triste.png"
+        },
+        {
+            "code": "3",
+            "url": "./emoji/disperato.png"
+        },
+        {
+            "code": "4",
+            "url": "./emoji/arrabbiato.png"
+        },
+        {
+            "code": "5",
+            "url": "./emoji/schifato.png"
+        },
+        {
+            "code": "6",
+            "url": "./emoji/preoccupato.png"
+        },
+        {
+            "code": "7",
+            "url": "./emoji/sorpreso.png"
+        },
+        {
+            "code": "8",
+            "url": "./emoji/annoiato.png"
+        },
+        {
+            "code": "9",
+            "url": "./emoji/spaventato.png"
+        }
+    ]

@@ -10,6 +10,7 @@ html, body, #app{
 
 .input-container{
     display: flex;
+    flex-direction: column;
     height: 45%;
     width: 300px;
 }

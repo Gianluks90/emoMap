@@ -14,7 +14,6 @@ export default class WCService{
     try {
       return JSON.parse(json);
     } catch (error) {
-      console.log('error', error)
       return json;
     }
   }
