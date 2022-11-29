@@ -2,6 +2,7 @@
 
 import WCService from "../../services/wc-service";
 import LocationService from "../../services/location-service";
+import { sel, tag } from "../../libs/emo-lib";
 
 export class InputComponent extends HTMLElement {
 
@@ -29,13 +30,16 @@ export class InputComponent extends HTMLElement {
     return WCService.selector('.main', {'height': '100%' , 'width': '100%', 'text-align': 'center'}) +
     WCService.selector('.button-container', {'height': '120px','width': "100%", 'display': 'flex', 'flex-wrap': 'wrap', 'margin-bottom': '20px'}) + 
     WCService.selector('.emoji-buttons', {'height': '40px','width': "40px", 'margin': '10px', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})+
-    WCService.selector('.buttons-img', {'height': '40px', 'width': '40px'})
+    sel('.buttons-img')
+      .r('height', '100%')
+      .r('width', '100%')
+      .end;
   }
   
   html(){
     return [
-      WCService.tag('style', null, null, this.css()),
-      WCService.tag('div', {class: "main"}, null, null, [
+      tag('style').h(this.css()),
+      tag('div').a('class', 'main').c(
         WCService.tag('p', {class: "input-title"}, null, 'HOW ARE YOU TODAY?', null),
         WCService.tag('div', {class: "button-container"}, null,null, this.initButtons()),
         WCService.tag('div', {class: 'text-input-container'}, null, null, [
@@ -45,7 +49,7 @@ export class InputComponent extends HTMLElement {
           WCService.tag('button', {class: 'confirm-button'}, {'click': () => this.sendInfos()}, 'OK', null),
           WCService.tag('button', {class: 'close-button'}, null, 'X', null)
         ])
-      ])
+      )
     ]
   }
 

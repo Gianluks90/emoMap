@@ -56,6 +56,7 @@ export default class WCService{
     return el;
 
   }
+  
   static selector(name, rules){
     return name +"{"+ Object.keys(rules).map(key => key + ": " + rules[key]).join(';') +"}"
   }
