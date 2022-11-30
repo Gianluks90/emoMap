@@ -86,6 +86,7 @@ export class MapComponent extends HTMLElement {
   addEmotionsLayer(map, emojiConfig) {
 
     FirebaseService.instance().getEmotions((emotions) => {
+      debugger
       if (this.emotionsLayer) {
         this.emotionsLayer.removeFrom(map);
       }
