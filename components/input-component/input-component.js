@@ -98,10 +98,10 @@ export class InputComponent extends HTMLElement {
 
   sendInfos(){
     const message = this.shadowRoot.getElementById('textfield').value
-    const location = LocationService.getLocation();
-    const info = {date: new Date().getTime(), emojiCode: this.selectedEmoji, message: message, location: location}
-    console.log(info);
-    //FirebaseService.setEmotion(info)
+    const loc = LocationService.getLocation()
+    const location = [loc.lng, loc.lat];
+    const info = {timestamp: new Date(), emoji: parseInt(this.selectedEmoji), message: message, latLon: location, userID: "Nicolò"}
+    FirebaseService.instance().setEmotion(info)
   }
 
   static get observedAttributes() { return []; }
