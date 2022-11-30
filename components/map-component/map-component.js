@@ -86,7 +86,6 @@ export class MapComponent extends HTMLElement {
   addEmotionsLayer(map, emojiConfig) {
 
     FirebaseService.instance().getEmotions((emotions) => {
-      debugger
       if (this.emotionsLayer) {
         this.emotionsLayer.removeFrom(map);
       }
@@ -111,11 +110,11 @@ export class MapComponent extends HTMLElement {
       if (this.userPosition) {
         this.userPosition.removeFrom(map);
       }
-      this.userPositionLayer = L.circleMarker([position.coord.longitude, position.coords.latitude], {
-        color: 'red',
-        fillColor: '#f03',
+      this.userPositionLayer = L.circleMarker([position.coords.latitude, position.coords.longitude], {
+        color: 'crimson',
+        fillColor: 'crimson',
         fillOpacity: 0.5,
-        radius: 100
+        radius: 8
       }).addTo(map);
     });
 
