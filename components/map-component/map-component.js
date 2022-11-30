@@ -1,7 +1,8 @@
 "use strict"
 
-import WCService from "../../services/wc-service";
 import * as L from 'leaflet';
+import { getAttributeOrDefault, sel, tag } from "../../libs/emo-lib";
+import FirebaseService from '../../services/firebse-service';
 
 
 export class MapComponent extends HTMLElement {
@@ -12,49 +13,83 @@ export class MapComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    this.baseUrl = WCService.getAttributeOrDefault(this, 'base-url', null);
-    this.theme = WCService.getAttributeOrDefault(this, 'theme-config', { type: 'light', backgroundColor: 'white', contrastColor: '#313131' })
-    this.shadowRoot.append(...this.html());
-    this.getBaseMapConfig(this.baseUrl, this.theme.type).then(config => {
-      this.initMap(config);
+    this.baseUrl = getAttributeOrDefault(this, 'base-url');
+    this.emojiUrl = getAttributeOrDefault(this, 'emoji-url');
+    this.theme = getAttributeOrDefault(this, 'theme-config', { type: 'light', backgroundColor: 'white', contrastColor: '#313131' })
+    this.configComponent(this.baseUrl, this.emojiUrl);
+  }
+
+  configComponent(baseUrl, emojiUrl) {
+    const fetches = [fetch(baseUrl).then(resp => resp.json()), fetch(emojiUrl).then(resp => resp.json())];
+    Promise.all(fetches).then(([baseConfig, emojiConfig]) => {
+      const mapDiv = tag('div').a('id', 'map');
+      this.shadowRoot.innerHTML = '';
+      this.shadowRoot.append(...this.createHtml(mapDiv));
+      this.map = this.initMap(mapDiv, baseConfig, emojiConfig, this.theme.type);
+      this.addBaseLayer(this.map, baseConfig, this.theme.type);
+      this.addEmotionsLayer(this.map, emojiConfig);
     });
+
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-  }
-
-  css() {
-    return WCService.selector('#map', { 'width' : '100%', 'height' : '100%' })+
-    WCService.selector('.leaflet-control-attribution', { 'background-color' : this.theme.backgroundColor + ' !important', 'color' : this.theme.contrastColor + ' !important'})+
-    WCService.selector('.leaflet-bar', { 'border' : '1px solid' + this.theme.contrastColor + ' !important' })+
-    WCService.selector('.leaflet-bar a', { 'background-color' : this.theme.backgroundColor + ' !important', 'color' : this.theme.contrastColor + ' !important', 'border-bottom-color': + this.theme.contrastColor + ' !important' })
-  }
-
-  html() {
+  createHtml(mapDiv) {
     return [
-      WCService.tag('style', null, null, this.css()),
-      WCService.tag('style', null, null, '@import  url("./public/leaflet.css")'),
-      WCService.tag('div', { id: "map" }, null, null)
+      tag('style').h('@import  url("./public/leaflet.css")'),
+      tag('style').h(this.createCss()),
+      mapDiv
     ]
   }
 
-  static get observedAttributes() { return ['c', 'l']; }
-
-  async getBaseMapConfig(url, type) {
-    console.log('attribute', url);
-    const baseConfig = await fetch(url).then(resp => resp.json());
-    return baseConfig[type] || baseConfig['default'];
+  createCss() {
+    return sel('#map')
+           .r('height', '100%')
+           .r('width', '100%')
+           .end +
+           sel('.leaflet-container-attribution')
+           .r('background-color', this.theme.backgroundColor + ' !important')
+           .r('color', this.theme.contrastColor + ' !important')
+           .end +
+           sel('.leaflet-bar')
+           .r('border','1px solid' + this.theme.contrastColor + ' !important')
+           .end +
+           sel('.leaflet-bar a')
+           .r('background-color', this.theme.backgroundColor + ' !important')
+           .r('color', this.theme.contrastColor + ' !important')
+           .r('border-bottom-color', this.theme.contrastColor + ' !important')
+           .end;
   }
 
-  initMap(config) {
-    console.log('config received', config);
-    const mapElement = this.shadowRoot.getElementById('map');
-    var map = L.map(mapElement, {
+  getBaseMapConfig(config, type) {
+    return config[type] || config['default'];
+  }
+
+  initMap(mapDiv) {
+
+    var map = L.map(mapDiv, {
       center: [44.409, 8.927],
-      zoom: 14
+      zoom: 14,
+      attributionControl: false,
     });
 
-    const baseLayer = L.tileLayer(config.url, { attribution: config.attribution}).addTo(map);
+    return map;
+  }
+
+  addBaseLayer(map, baseConfig, type) {
+
+    const config = this.getBaseMapConfig(baseConfig, type);
+    L.tileLayer(config.url, { attribution: config.attribution}).addTo(map);
+
+  }
+
+  addEmotionsLayer(map, emojiConfig) {
+
+    FirebaseService.instance().getEmotions((emotions) => {
+      L.geoJSON(emotions, {pointToLayer: (feature, latlng) => this.pointToLayer(feature, latlng, emojiConfig)}).addTo(map);
+    })
+  }
+
+  pointToLayer(feature, latlng, emojiConfig) {
+    return L.circleMarker(latlng);
   }
 
 }
