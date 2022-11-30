@@ -2,6 +2,7 @@
 
 import * as L from 'leaflet';
 import { getAttributeOrDefault, sel, tag } from "../../libs/emo-lib";
+import FirebaseService from '../../services/firebse-service';
 
 
 export class MapComponent extends HTMLElement {
@@ -24,8 +25,11 @@ export class MapComponent extends HTMLElement {
       const mapDiv = tag('div').a('id', 'map');
       this.shadowRoot.innerHTML = '';
       this.shadowRoot.append(...this.createHtml(mapDiv));
-      this.initMap(mapDiv, baseConfig, emojiConfig, this.theme.type);
+      this.map = this.initMap(mapDiv, baseConfig, emojiConfig, this.theme.type);
+      this.addBaseLayer(this.map, baseConfig, this.theme.type);
+      this.addEmotionsLayer(this.map, emojiConfig);
     });
+
   }
 
   createHtml(mapDiv) {
@@ -55,20 +59,37 @@ export class MapComponent extends HTMLElement {
            .end;
   }
 
-  async getBaseMapConfig(config, type) {
+  getBaseMapConfig(config, type) {
     return config[type] || config['default'];
   }
 
-  initMap(mapDiv, baseConfig, emojiConfig, type) {
-    
+  initMap(mapDiv) {
+
     var map = L.map(mapDiv, {
       center: [44.409, 8.927],
-      zoom: 14
+      zoom: 14,
+      attributionControl: false,
     });
 
-    const config = this.getBaseMapConfig(baseConfig, type);
+    return map;
+  }
 
+  addBaseLayer(map, baseConfig, type) {
+
+    const config = this.getBaseMapConfig(baseConfig, type);
     L.tileLayer(config.url, { attribution: config.attribution}).addTo(map);
+
+  }
+
+  addEmotionsLayer(map, emojiConfig) {
+
+    FirebaseService.instance().getEmotions((emotions) => {
+      L.geoJSON(emotions, {pointToLayer: (feature, latlng) => this.pointToLayer(feature, latlng, emojiConfig)}).addTo(map);
+    })
+  }
+
+  pointToLayer(feature, latlng, emojiConfig) {
+    return L.circleMarker(latlng);
   }
 
 }
