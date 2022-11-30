@@ -91,8 +91,8 @@ export class MapComponent extends HTMLElement {
   pointToLayer(feature, latlng, emojiConfig) {
     const icon = L.icon({
       iconUrl: emojiConfig[feature.properties.emoji].url,
-      iconSize:     [36, 36],
-      iconAnchor:   [18, 18],
+      iconSize:     [28, 28],
+      iconAnchor:   [14, 14],
       popupAnchor:  [24, 0] // point from which the popup should open relative to the iconAnchor
     });
 
