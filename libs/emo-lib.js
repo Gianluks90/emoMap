@@ -82,7 +82,6 @@ function getAttributeOrDefault(element, name, defaultValue){
 
 function tryParse(json){
   try {
-    debugger
     const obj = JSON.parse(json);
     return obj
     //return JSON.parse(json);
