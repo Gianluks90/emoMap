@@ -100,12 +100,10 @@ export class InputComponent extends HTMLElement {
     const message = this.shadowRoot.getElementById('textfield').value
     // const loc = LocationService.getLocation()
     // const location = [loc.lng, loc.lat];
-    navigator.geolocation.getCurrentPosition((pos) => {
-      console.log("position", pos);
-      const location = [pos.coords.longitude, pos.coords.latitude]
-      const info = {timestamp: new Date(), emoji: parseInt(this.selectedEmoji), message: message, latLon: location, userID: "Nicolò"}
-      FirebaseService.instance().setEmotion(info)
-    })
+
+    const pos = LocationService.instance().position;
+    const info = { timestamp: new Date(), emoji: parseInt(this.selectedEmoji), message: message, latLon: [pos.coords.longitude, pos.coords.latitude], userID: "Nicolò" }
+    FirebaseService.instance().setEmotion(info)
   }
 
   static get observedAttributes() { return []; }
