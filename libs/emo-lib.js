@@ -47,7 +47,15 @@ function empowerElement(el){
   };
 
   el.c = (...children) => {
-    children.forEach(child => el.appendChild(child));
+    children.forEach(child => {
+      if (child) {
+        if (typeof child === "string") {
+          el.appendChild(document.createTextNode(child));
+        } else {
+          el.appendChild(child);
+        }
+      }
+    });
     return el;
   };
 
@@ -66,7 +74,7 @@ function empowerElement(el){
 
 function getAttributeOrDefault(element, name, defaultValue){
   if (element.hasAttribute(name)) {
-    return WCService.tryParse(element.getAttribute(name)) || defaultValue;
+    return tryParse(element.getAttribute(name)) || defaultValue;
   } else {
     return defaultValue;
   }
@@ -74,7 +82,10 @@ function getAttributeOrDefault(element, name, defaultValue){
 
 function tryParse(json){
   try {
-    return JSON.parse(json);
+    debugger
+    const obj = JSON.parse(json);
+    return obj
+    //return JSON.parse(json);
   } catch (error) {
     return json;
   }
