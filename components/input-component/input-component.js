@@ -72,7 +72,7 @@ export class InputComponent extends HTMLElement {
     console.log(info);
   }
 
-  static get observedAttributes() { return ['c', 'l']; }
+  static get observedAttributes() { return []; }
 
 
 }
