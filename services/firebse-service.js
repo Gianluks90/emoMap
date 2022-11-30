@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, query, onSnapshot } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence  } from "firebase/auth";
+import { getFirestore, collection, query, onSnapshot, addDoc, GeoPoint } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence} from "firebase/auth";
 import ParseService from "./parse-service";
 
 export default class FirebaseService {
@@ -101,6 +101,8 @@ export default class FirebaseService {
 
   setEmotion(emotion){
     const emotionsRef = collection(this.db, "emotions");
-    addDoc(emotionsRef, emotion);
+    //addDoc(emotionsRef, emotion);
+    emotion.latLon = new GeoPoint(emotion.latLon[0], emotion.latLon[1]);
+    addDoc(emotionsRef, emotion)
   }
 }
