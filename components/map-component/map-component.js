@@ -84,7 +84,10 @@ export class MapComponent extends HTMLElement {
   addEmotionsLayer(map, emojiConfig) {
 
     FirebaseService.instance().getEmotions((emotions) => {
-      L.geoJSON(emotions, {pointToLayer: (feature, latlng) => this.pointToLayer(feature, latlng, emojiConfig)}).addTo(map);
+      if (this.emotionsLayer) {
+        this.emotionsLayer.removeFrom(map);
+      }
+      this.emotionsLayer = L.geoJSON(emotions, {pointToLayer: (feature, latlng) => this.pointToLayer(feature, latlng, emojiConfig)}).addTo(map);
     })
   }
 
