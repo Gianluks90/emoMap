@@ -3,6 +3,7 @@
 import * as L from 'leaflet';
 import { getAttributeOrDefault, sel, tag } from "../../libs/emo-lib";
 import FirebaseService from '../../services/firebse-service';
+import LocationService from '../../services/location-service';
 
 
 export class MapComponent extends HTMLElement {
@@ -26,6 +27,7 @@ export class MapComponent extends HTMLElement {
       this.shadowRoot.innerHTML = '';
       this.shadowRoot.append(...this.createHtml(mapDiv));
       this.map = this.initMap(mapDiv, baseConfig, emojiConfig, this.theme.type);
+      this.addUserPosition(this.map);
       this.addBaseLayer(this.map, baseConfig, this.theme.type);
       this.addEmotionsLayer(this.map, emojiConfig);
     });
@@ -100,6 +102,23 @@ export class MapComponent extends HTMLElement {
     });
 
     return L.marker(latlng, {icon: icon});
+  }
+
+  addUserPosition(map) {
+
+    LocationService.instance().startMonitoring((position) => {
+      if (this.userPosition) {
+        this.userPosition.removeFrom(map);
+      }
+      this.userPositionLayer = L.circleMarker([position.coord.longitude, position.coords.latitude], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 100
+      }).addTo(map);
+    });
+
+    
   }
 
 }
