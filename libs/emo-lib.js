@@ -64,5 +64,31 @@ function empowerElement(el){
   return el;
 }
 
+function getAttributeOrDefault(element, name, defaultValue){
+  if (element.hasAttribute(name)) {
+    return WCService.tryParse(element.getAttribute(name)) || defaultValue;
+  } else {
+    return defaultValue;
+  }
+}
 
-export {tag, svg, sel}
+function tryParse(json){
+  try {
+    return JSON.parse(json);
+  } catch (error) {
+    return json;
+  }
+}
+
+function setAttribute(element, name, value){
+  if (typeof value === "string") {
+    element.setAttribute(name, value);
+    return value;
+  } else {
+    const valueString = JSON.stringify(value);
+    element.setAttribute(name, valueString);
+    return valueString;
+  }
+}
+
+export {tag, svg, sel, getAttributeOrDefault, tryParse, setAttribute};
