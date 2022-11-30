@@ -108,8 +108,8 @@ export class MapComponent extends HTMLElement {
   addUserPosition(map) {
 
     LocationService.instance().startMonitoring((position) => {
-      if (this.userPosition) {
-        this.userPosition.removeFrom(map);
+      if (this.userPositionLayer) {
+        this.userPositionLayer.removeFrom(map);
       }
       this.userPositionLayer = L.circleMarker([position.coord.longitude, position.coords.latitude], {
         color: 'red',
