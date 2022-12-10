@@ -39,10 +39,10 @@ export class MapComponent extends HTMLElement {
       tag('style').h('@import url("./public/em-style.css")'),
       tag('style').h(this.createCss()),
       tag('div').a('class', 'control-container').c(
-        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
+        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.zoomIn()).c(
           tag('img').a('src', './public/icons/plus.svg').a('class', 'control-image')
         ),
-        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
+        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.zoomOut()).c(
           tag('img').a('src', './public/icons/minus.svg').a('class', 'control-image')
         ),
         tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
@@ -173,6 +173,18 @@ export class MapComponent extends HTMLElement {
     console.log('e clicked', this.position);
     var latlng = [this.position.coords.latitude, this.position.coords.longitude]
     this.map.flyTo(latlng);
+  }
+
+  zoomIn(){
+    if (this.map.getZoom() < 18) {
+      this.map.setZoom(this.map.getZoom() + 1)
+    }
+  }
+
+  zoomOut(){
+    if (this.map.getZoom() > 2) {
+      this.map.setZoom(this.map.getZoom() - 1)
+    }
   }
 
 }
