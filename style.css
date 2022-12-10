@@ -15,15 +15,15 @@ html, body, #app{
     flex-direction: column;
     justify-content: center;
     height: 45%;
-    /* width: 100%; */
+    width: max-content;
     position: absolute;
     z-index: 3000;
     /* background-color: white; */
-    bottom: 12px;
+    bottom: 0px;
     left: 0;
     right: 0;
-    /* margin-left: auto;
-    margin-right: auto; */
+    margin-left: auto;
+    margin-right: auto;
     align-items: center;
 }
 
