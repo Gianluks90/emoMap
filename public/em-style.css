@@ -23,7 +23,8 @@ div[em-card] {
     box-shadow: 0px 0px 15px -2px gray;
     padding: 12px;
     margin: 24px;
-    position: relative;
+    position: absolute;
+    max-width: 300px;
 }
 
 /* TEXT */
@@ -160,6 +161,14 @@ input[em-input-text] {
 input[em-input-text]:focus {
     outline: none;
     border-bottom: 2px solid gray;
+}
+
+textarea[em-textarea]{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    box-shadow: inset 0px 0px 8px -5px gray;
 }
 
 input[em-input-checkbox] {
