@@ -169,6 +169,7 @@ input[em-input-text]:focus {
 
 textarea[em-textarea]{
     width: 100%;
+    max-height: 50px;
     border: none;
     padding: 6px;
     box-shadow: inset 0px 0px 8px -5px gray;

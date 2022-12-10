@@ -79,7 +79,12 @@ export class InputComponent extends HTMLElement {
         tag('p').a('em-title', '').h('HOW ARE YOU TODAY?'),
         tag('div').a('class', 'button-container').a('id', 'b-cont').c(...this.initButtons()),
         tag('div').a('class', 'text-input-container').a('id', 't-cont').c(
-          tag('textarea').a('em-textarea', '').a('id', 'textfield').a('placeholder', 'Describe it!')
+          tag('textarea')
+            .a('em-textarea', '')
+            .a('id', 'textfield')
+            .a('rows', '1')
+            .a('max-rows', '2')
+            .a('placeholder', 'Describe it!')
         ),
          tag('div').a('class', 'confirmation-container').a('id', 'c-cont').c(
           tag('button').a('em-button-square', '').e('click', (e) => this.cancelAndReset(e)).h('X'),
