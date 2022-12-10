@@ -99,6 +99,13 @@ export default class FirebaseService {
     });
   }
 
+  getEmotionsByLocation(lat, lon, callback){
+    const q = query(collection(this.db, "emotions"));
+    onSnapshot(q, (querySnapshot) => {
+      callback(ParseService.createGeoJSON(querySnapshot.docs.map(doc => doc.data())));
+    });
+  }
+
   setEmotion(emotion){
     const emotionsRef = collection(this.db, "emotions");
     //addDoc(emotionsRef, emotion);
@@ -112,6 +119,15 @@ export default class FirebaseService {
       description: "Ciao sono Pippo",
     }
   }
+
+  getCurrentUser(){
+    return {uid: "1234", name: "Pippo"};
+  }
+
+  getUpdateUser(user){
+    return user;
+  }
+
 
 
 }
