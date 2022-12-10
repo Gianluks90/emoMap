@@ -85,6 +85,7 @@ export class InputComponent extends HTMLElement {
         tag('div').a('class', 'button-container').a('id', 'b-cont-b').c(...this.populateEmojis()[1]),
         tag('div').a('class', 'text-input-container').a('id', 't-cont').c(
           tag('textarea').a('em-textarea', '').a('id', 'textfield').a('rows', 3).a('maxlength', 140)
+            .a('placeholder', 'Describe it!')
         ),
          tag('div').a('class', 'confirmation-container').a('id', 'c-cont').c(
           tag('button').a('em-button-square', '').e('click', (e) => this.cancelAndReset(e)).c(
