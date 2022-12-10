@@ -116,7 +116,7 @@ export default class FirebaseService {
   getUserByUid(uid){
     return {
       name: "Pippo",
-      description: "Ciao sono Pippo",
+      description: "# Ciao sono Pippo\n## e sono il migliore\n### Ciao\n**ciccio**\n*pippo*",
     }
   }
 
