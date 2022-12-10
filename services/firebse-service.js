@@ -105,4 +105,13 @@ export default class FirebaseService {
     emotion.latLon = new GeoPoint(emotion.latLon[0], emotion.latLon[1]);
     addDoc(emotionsRef, emotion)
   }
+
+  getUserByUid(uid){
+    return {
+      name: "Pippo",
+      description: "Ciao sono Pippo",
+    }
+  }
+
+
 }
