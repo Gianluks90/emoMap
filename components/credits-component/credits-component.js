@@ -1,6 +1,6 @@
 import { sel, tag } from "../../libs/emo-lib";
 
-class CreditsComponent extends HTMLElement {
+export class CreditsComponent extends HTMLElement {
 
   constructor() {
     super();
