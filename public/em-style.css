@@ -26,6 +26,14 @@ div[em-card] {
     position: relative;
 }
 
+div[em-header]{
+    background-color: #efefef;
+    box-shadow: 0px 0px 15px -2px gray;
+    padding: 12px;
+    margin: 6px;
+    position: relative;
+}
+
 /* TEXT */
 p[em-title] {
     text-transform: lowercase;
