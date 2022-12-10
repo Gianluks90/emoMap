@@ -35,9 +35,20 @@ export class MapComponent extends HTMLElement {
 
   createHtml(mapDiv) {
     return [
-      tag('style').h('@import  url("./public/leaflet.css")'),
+      tag('style').h('@import url("./public/leaflet.css")'),
+      tag('style').h('@import url("./public/em-style.css")'),
       tag('style').h(this.createCss()),
-      tag('button').a('em-button-square', '').h('C').e('click', this.centerClicked),
+      tag('div').a('class', 'control-container').c(
+        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
+          tag('img').a('src', './public/icons/plus.svg').a('class', 'control-image')
+        ),
+        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
+          tag('img').a('src', './public/icons/minus.svg').a('class', 'control-image')
+        ),
+        tag('button').a('em-button-square', '').a('class', 'control-button').h('').e('click', () => this.centerClicked()).c(
+          tag('img').a('src', './public/icons/center.svg').a('class', 'control-image')
+        )
+      ),
       mapDiv      
     ]
   }
@@ -59,11 +70,23 @@ export class MapComponent extends HTMLElement {
            .r('color', this.theme.contrastColor + ' !important')
            .r('border-bottom-color', this.theme.contrastColor + ' !important')
            .end +
-           sel('button')
+           sel('.control-container')
+           .r('display', 'flex')
+           .r('flex-direction', 'column')
            .r('position', 'absolute')
-           .r('bottom', '5px')
-           .r('left', '5px')
+           .r('top', '0px')
+           .r('right', '0px')
            .r('z-index', '2000')
+           .r('gap', '6px')
+           .r('margin', '12px')
+           .end +
+           sel('.control-button')
+           .r('width', '35px !important')
+           .r('height', '35px !important')
+           .end + 
+           sel('.control-image')
+           .r('width', '30px !important')
+           .r('height', '30px !important')
            .end
   }
 
@@ -77,9 +100,8 @@ export class MapComponent extends HTMLElement {
       center: [44.409, 8.927],
       zoom: 10,
       attributionControl: false,
+      zoomControl: false
     });
-
-    map.zoomControl.setPosition('bottomright');
 
     var longpress = false;
     map.on('click', (e)=>{
@@ -133,6 +155,7 @@ export class MapComponent extends HTMLElement {
   addUserPosition(map) {
 
     LocationService.instance().startMonitoring((position) => {
+      this.position = position;
       if (this.userPositionLayer) {
         this.userPositionLayer.removeFrom(map);
       }
@@ -147,7 +170,9 @@ export class MapComponent extends HTMLElement {
   }
 
   centerClicked(){
-    console.log('e clicked')
+    console.log('e clicked', this.position);
+    var latlng = [this.position.coords.latitude, this.position.coords.longitude]
+    this.map.flyTo(latlng);
   }
 
 }
