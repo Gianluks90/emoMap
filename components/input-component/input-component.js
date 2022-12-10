@@ -140,12 +140,14 @@ export class InputComponent extends HTMLElement {
   }
 
   startingClick(){
-    const buttonCont = this.shadowRoot.getElementById('b-cont-a');
-    const buttonContB = this.shadowRoot.getElementById('b-cont-b');
-    const mainCard = this.shadowRoot.getElementById('main-card');
-    buttonCont.style.display = "flex";
-    buttonContB.style.display = "flex";
-    mainCard.style.cursor = "auto";
+    if (this.cdSwitch) {
+      const buttonCont = this.shadowRoot.getElementById('b-cont-a');
+      const buttonContB = this.shadowRoot.getElementById('b-cont-b');
+      const mainCard = this.shadowRoot.getElementById('main-card');
+      buttonCont.style.display = "flex";
+      buttonContB.style.display = "flex";
+      mainCard.style.cursor = "auto";
+    }
   }
 
   cancelAndReset(e){
