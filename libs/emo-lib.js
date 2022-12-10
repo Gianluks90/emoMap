@@ -148,4 +148,12 @@ function setAttribute(element, name, value){
   }
 }
 
+function getElement(selector, parent = document) {
+  return empowerElement(parent.querySelector(selector));
+}
+
+function getElementAll(selector, parent = document) { 
+  return empowerElement(parent.querySelectorAll(selector));
+}
+
 export {tag, svg, sel, getAttributeOrDefault, tryParse, setAttribute};

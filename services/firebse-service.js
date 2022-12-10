@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, onSnapshot, addDoc, GeoPoint } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence} from "firebase/auth";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, signInAnonymously} from "firebase/auth";
 import ParseService from "./parse-service";
 
 export default class FirebaseService {
@@ -23,9 +23,17 @@ export default class FirebaseService {
 
     this.app = initializeApp(this.FIREBASE_KEYS);
     this.db = getFirestore(this.app);
-    // this.auth = getAuth(this.app);
+    this.auth = getAuth(this.app);
 
-    // this.observeAuthState();
+    if(!this.auth.currentUser) {
+      signInAnonymously(this.auth).then((user) => {
+        console.log('user', user);
+        this.auth.setPersistence('local').then(() => {
+          console.log('persistence set');
+        });
+      }).catch((error) => console.log(error));
+    
+    }
   }
 
 
@@ -121,7 +129,7 @@ export default class FirebaseService {
   }
 
   getCurrentUser(){
-    return {uid: "1234", name: "Pippo"};
+    return this.auth.currentUser;
   }
 
   getUpdateUser(user){

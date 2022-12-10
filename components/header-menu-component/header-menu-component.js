@@ -9,7 +9,7 @@ class HeaderMenuComponent extends HTMLElement {
 
     html() {
         return tag('div').a('em-card', '').c(
-            tag('img').a('src', '../../public/logo.png')
+            tag('img').a('src', '../../logo.png')
         )
     }
 

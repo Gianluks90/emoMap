@@ -74,7 +74,7 @@ export class InputComponent extends HTMLElement {
   html(){
     return [
       tag('style').h(this.css()),
-      tag('style').h("@import url('../../public/em-style.css')"),
+      tag('style').h("@import url('../../em-style.css')"),
       tag('div').a('class', 'main').a('id', 'main-card').c(
         tag('p').a('em-title', '').h('HOW ARE YOU TODAY?'),
         tag('div').a('class', 'button-container').a('id', 'b-cont').c(...this.initButtons()),

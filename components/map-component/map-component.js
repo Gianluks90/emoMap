@@ -35,7 +35,7 @@ export class MapComponent extends HTMLElement {
 
   createHtml(mapDiv) {
     return [
-      tag('style').h('@import  url("./public/leaflet.css")'),
+      tag('style').h('@import  url(".//leaflet.css")'),
       tag('style').h(this.createCss()),
       tag('button').a('em-button-square', '').h('C').e('click', this.centerClicked),
       mapDiv      
