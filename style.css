@@ -36,3 +36,13 @@ html, body, #app{
     top: 0;
     left: 20px;
 }
+
+.menu{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 70px;
+    height: 70px;
+    display: block;
+    z-index: 2000;
+}
