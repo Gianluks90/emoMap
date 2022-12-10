@@ -12,8 +12,11 @@ function tag(name) {
 
 }
 
+
 /**
- * ADD DOCUMENTATION
+ * It creates an SVG element, and then returns the result of calling `empowerElement` on that element
+ * @param name - The name of the SVG element to create.
+ * @returns A function that takes a name as an argument and returns an element.
  */
 function svg(name) {
 
@@ -37,10 +40,16 @@ function sel(name){
     return sel;
   }
 
+  sel.toString = () => name + "{" + Object.keys(sel.rules).map(key => key + ": " + sel.rules[key]).join(';') + "}";
+
   Object.defineProperty(sel, 'end', {get : () => name + "{" + Object.keys(sel.rules).map(key => key + ": " + sel.rules[key]).join(';') + "}"});
 
   return sel;
-  
+}
+
+
+function selector(name) {
+  return sel(name);
 }
 
 /**
@@ -92,8 +101,13 @@ function empowerElement(el){
   return el;
 }
 
+
 /**
- * ADD DOCUMENTATION
+ * If the element has the attribute, return the attribute's value, otherwise return the default value
+ * @param element - The element to get the attribute from.
+ * @param name - The name of the attribute to get.
+ * @param defaultValue - The default value to return if the attribute is not present.
+ * @returns The value of the attribute or the default value if the attribute is not present.
  */
 function getAttributeOrDefault(element, name, defaultValue){
   if (element.hasAttribute(name)) {
@@ -103,14 +117,15 @@ function getAttributeOrDefault(element, name, defaultValue){
   }
 }
 
+
 /**
- * ADD DOCUMENTATION
+ * If the string is valid JSON, return the parsed JSON, otherwise return the string
+ * @param json - The JSON string to parse.
+ * @returns the JSON.parse(json) if it can be parsed, otherwise it returns the json.
  */
 function tryParse(json){
   try {
-    const obj = JSON.parse(json);
-    return obj
-    //return JSON.parse(json);
+    return JSON.parse(json);
   } catch (error) {
     return json;
   }
