@@ -13,16 +13,18 @@ html, body, #app{
 .input-container{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     height: 45%;
-    width: 300px;
+    /* width: 100%; */
     position: absolute;
     z-index: 3000;
-    background-color: white;
-    top: 55%;
+    /* background-color: white; */
+    bottom: 12px;
     left: 0;
     right: 0;
-    margin-left: auto; 
-    margin-right: auto; 
+    /* margin-left: auto;
+    margin-right: auto; */
+    align-items: center;
 }
 
 .map{
