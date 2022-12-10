@@ -5,7 +5,6 @@ import { getAttributeOrDefault, sel, tag } from "../../libs/emo-lib";
 import FirebaseService from '../../services/firebse-service';
 import LocationService from '../../services/location-service';
 
-
 export class MapComponent extends HTMLElement {
 
   constructor() {
