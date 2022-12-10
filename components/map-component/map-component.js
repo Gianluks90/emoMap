@@ -37,7 +37,8 @@ export class MapComponent extends HTMLElement {
     return [
       tag('style').h('@import  url("./public/leaflet.css")'),
       tag('style').h(this.createCss()),
-      mapDiv
+      tag('button').a('em-button-square', '').h('C').e('click', this.centerClicked),
+      mapDiv      
     ]
   }
 
@@ -57,7 +58,13 @@ export class MapComponent extends HTMLElement {
            .r('background-color', this.theme.backgroundColor + ' !important')
            .r('color', this.theme.contrastColor + ' !important')
            .r('border-bottom-color', this.theme.contrastColor + ' !important')
-           .end;
+           .end +
+           sel('button')
+           .r('position', 'absolute')
+           .r('bottom', '5px')
+           .r('left', '5px')
+           .r('z-index', '2000')
+           .end
   }
 
   getBaseMapConfig(config, type) {
@@ -72,6 +79,27 @@ export class MapComponent extends HTMLElement {
       attributionControl: false,
     });
 
+    map.zoomControl.setPosition('bottomright');
+
+    var longpress = false;
+    map.on('click', (e)=>{
+      var startTime, endTime;
+
+      map.on('mousedown', function () {
+          startTime = new Date().getTime();
+      });
+  
+      map.on('mouseup', function () {
+          endTime = new Date().getTime();
+          longpress = (endTime - startTime < 500) ? false : true;
+      });
+
+      longpress? console.log("Long Press", e.latlng) : console.log("Short Press", e.latlng);
+      if (longpress) {
+        map.setView(e.latlng);
+      }
+    });
+
     return map;
   }
 
@@ -79,7 +107,6 @@ export class MapComponent extends HTMLElement {
 
     const config = this.getBaseMapConfig(baseConfig, type);
     L.tileLayer(config.url, { attribution: config.attribution}).addTo(map);
-
   }
 
   addEmotionsLayer(map, emojiConfig) {
@@ -113,11 +140,14 @@ export class MapComponent extends HTMLElement {
         color: 'crimson',
         fillColor: 'crimson',
         fillOpacity: 0.5,
-        radius: 8
+        radius: 12
       }).addTo(map);
     });
 
-    
+  }
+
+  centerClicked(){
+    console.log('e clicked')
   }
 
 }
