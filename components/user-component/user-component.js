@@ -1,3 +1,4 @@
+import { TwitterAuthProvider } from "firebase/auth";
 import { sel, tag } from "../../libs/emo-lib";
 import FirebaseService from '../../services/firebse-service';
 import MarkDownService from '../../services/markdown-service';
@@ -19,6 +20,7 @@ class UserComponent extends HTMLElement {
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		const userUid = Object.fromEntries(urlSearchParams.entries()).id;
 		this.user = FirebaseService.instance().getUserByUid(userUid);
+		this.description = MarkDownService.instance().markdownToHtml(this.user.description);
 		this.isCurrentUser = FirebaseService.instance().getCurrentUser().uid === userUid;
 	}
 
@@ -51,8 +53,8 @@ class UserComponent extends HTMLElement {
 				.r('flex-direction', 'column')
 				.r('flex-grow', '1')
 				.r('width', '100%')
-				.r('justify-content', 'center')
-				.r('align-items', 'center').end
+				.r('padding', '16px')
+				.r('box-sizing', 'border-box').end
 	}
 
 	createHtml() {
@@ -62,26 +64,32 @@ class UserComponent extends HTMLElement {
 				tag('div').a('class', 'navbar').c(
 					tag('img').a('src', '../emoji/back.svg').a('class', 'navbar-img'),
 					tag('span').a('class', 'username').h(this.user.name),
-					tag('img').a('src', '../emoji/pencil.svg').a('class', 'navbar-img').s('visibility', this.isCurrentUser && !this.isEditing ? 'visible' : 'hidden').e('click', () => this.startEditing()),
-					tag('img').a('src', '../emoji/save.svg').a('class', 'navbar-img').s('visibility', this.isCurrentUser && this.isEditing ? 'visible' : 'hidden')
+					tag('img').a('src', this.isEditing ? '../emoji/save.svg' : '../emoji/pencil.svg').a('class', 'navbar-img').s('visibility', this.isCurrentUser ? 'visible' : 'hidden').e('click', () => this.editOrSave()),
 				),
-				tag('div').a('class', 'description').a('contenteditable', this.isCurrentUser).a('id', 'description').h(this.user.description),
-				tag('div').a('class', 'confirmation-container').c(
-					tag('button').a('class', 'confirm-button').e('click', () => this.updateDescription(this.shadowRoot.getElementById('description').innerText)).h('Save')
-				)
+				tag('pre').a('class', 'description').a('contenteditable', this.isEditing).a('id', 'description').h(this.description)
 			)
 		]
 	}
 
+	editOrSave() {
+		if(this.isEditing)
+			this.updateDescription();
+		else
+			this.startEditing();
+	}
+
 	startEditing() {
-		this.isEditing = true;
+		this.isEditing = true; 
+		this.description = this.user.description;
 		this.render();
 	}
 
-	updateDescription(description) {
+	updateDescription() {
+		const description = this.shadowRoot.getElementById('description').innerText;
 		this.user.description = description;
 		this.user = FirebaseService.instance().getUpdateUser(this.user);
-		this.user.description = MarkDownService.instance().markdownToHtml(this.user.description);
+		this.description = MarkDownService.instance().markdownToHtml(this.user.description);
+		this.isEditing = false;
 		this.render();
 	}
 }
